@@ -1,4 +1,5 @@
 import { profile } from "./content";
+import { escapeHtml } from "./safe-html";
 
 export function renderAbout(): string {
   return `
@@ -11,11 +12,7 @@ export function renderAbout(): string {
 
         <div class="section-header">
 
-          <div>
-            <p class="section-number">
-              01 / About
-            </p>
-          </div>
+          <div aria-hidden="true"></div>
 
           <div>
 
@@ -33,14 +30,13 @@ export function renderAbout(): string {
         <div class="about-grid">
 
           <div class="about-marker">
-            <span>01</span>
             <span>J.G.</span>
           </div>
 
           <div class="about-content">
 
             <p class="about-lede">
-              ${profile.intro}
+              ${escapeHtml(profile.intro)}
             </p>
 
             <div class="about-details">

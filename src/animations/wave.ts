@@ -15,6 +15,8 @@ export function initWave(
     return;
   }
 
+  const drawingContext = ctx;
+
   const {
     amplitude = 35,
     frequency = 0.012,
@@ -33,16 +35,16 @@ export function initWave(
     canvas.width = rect.width * dpr;
     canvas.height = rect.height * dpr;
 
-    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    drawingContext.setTransform(dpr, 0, 0, dpr, 0, 0);
   }
 
   function draw() {
     const width = canvas.clientWidth;
     const height = canvas.clientHeight;
 
-    ctx.clearRect(0, 0, width, height);
+    drawingContext.clearRect(0, 0, width, height);
 
-    ctx.beginPath();
+    drawingContext.beginPath();
 
     for (let x = 0; x <= width; x++) {
       const y =
@@ -50,15 +52,15 @@ export function initWave(
         Math.sin(x * frequency + time) * amplitude;
 
       if (x === 0) {
-        ctx.moveTo(x, y);
+        drawingContext.moveTo(x, y);
       } else {
-        ctx.lineTo(x, y);
+        drawingContext.lineTo(x, y);
       }
     }
 
-    ctx.lineWidth = lineWidth;
-    ctx.strokeStyle = "currentColor";
-    ctx.stroke();
+    drawingContext.lineWidth = lineWidth;
+    drawingContext.strokeStyle = "currentColor";
+    drawingContext.stroke();
 
     time += speed;
 
