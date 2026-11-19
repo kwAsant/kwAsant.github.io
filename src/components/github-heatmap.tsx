@@ -38,13 +38,20 @@ export function GithubHeatmap() {
   const total = contribution.reduce((sum, day) => sum + day.count, 0);
 
   return <>
-    {error ? <p className="cv-heatmap-status" role="status">GitHub activity is temporarily unavailable.</p> : !days ? <p className="cv-heatmap-status" role="status">Loading GitHub activity…</p> : <>
-      <div className="cv-heatmap-toolbar">
-        <p className="cv-heatmap-status" aria-live="polite">{total.toLocaleString('en-GB')} contributions {year === 'last' ? 'in the last year' : `in ${year}`}</p>
-        <label>Period <select value={year} onChange={(event) => setYear(event.target.value)} aria-label="Contribution period"><option value="last">Last year</option>{years.map((item) => <option key={item} value={item}>{item}</option>)}</select></label>
+    <p className="cv-contributions-intro">A supporting view of GitHub activity.</p>
+    <div className="cv-contributions-layout">
+      <div className="cv-contributions-chart">
+        {error ? <p className="cv-heatmap-status" role="status">GitHub activity is temporarily unavailable.</p> : !days ? <p className="cv-heatmap-status" role="status">Loading GitHub activity…</p> : <ContributionHeatmap className="contribution-heatmap--light cv-github-heatmap" locale="en-GB" data={{ contribution, period, weeks: groupByWeeks(contribution) }} />}
       </div>
-      <ContributionHeatmap className="contribution-heatmap--light cv-github-heatmap" locale="en-GB" data={{ contribution, period, weeks: groupByWeeks(contribution) }} />
-    </>}
-    <a className="cv-heatmap-link" href="https://github.com/kwAsant" target="_blank" rel="noopener noreferrer">View GitHub profile</a>
+      <div className="cv-contributions-summary">
+        <p className="cv-contributions-label">GitHub activity</p>
+        {days && !error && <>
+          <p className="cv-contributions-count" aria-live="polite">{total.toLocaleString('en-GB')}</p>
+          <p>contributions {year === 'last' ? 'in the last year' : `in ${year}`}. Activity counts are not a measure of impact.</p>
+          <div className="cv-heatmap-toolbar"><label>Period <select value={year} onChange={(event) => setYear(event.target.value)} aria-label="Contribution period"><option value="last">Last year</option>{years.map((item) => <option key={item} value={item}>{item}</option>)}</select></label></div>
+        </>}
+        <a className="cv-heatmap-link" href="https://github.com/kwAsant" target="_blank" rel="noopener noreferrer">View GitHub profile</a>
+      </div>
+    </div>
   </>;
 }
